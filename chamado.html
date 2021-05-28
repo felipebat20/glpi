@@ -16,7 +16,7 @@
 
         <div class="panel form-group col-10 mx-auto  rounded-3 py-3 my-5">
             <h1 class="text-center">Cadastro de Incidente</h1>
-            <form action="#" method="POST" class="col-10 mx-auto">
+            <form action="#" method="POST" class="col-11 mx-auto">
                 <label for="protocolo">
                     Procolo:
                     <input class="form-control" type="number" value="2" readonly disabled>
@@ -24,18 +24,42 @@
                 <div class="row form-group">
                     <div class="col-6">
                         <label for="data">
-                            Data: 
+                            Data:
                             <input class="form-control" type="datetime" id="data" value="2021-01-01" readonly>
                         </label>
                     </div>
                     <div class="col-6">
                         <label for="usuario">
-                            Usuário: 
-                            <input type="text" value="Felipe Batista" class="form-control" disabled >
+                            Usuário:
+                            <input type="text" value="Felipe Batista" class="form-control" disabled>
                         </label>
                     </div>
-                    <div>
-
+                    <div class="col-6">
+                        <label for="area">Área</label>
+                        <select name="area" id="area" class="form-select">
+                            <option value="0" selected>Selecione a área</option>
+                            <option value="1">Sistemas Operacionais</option>
+                            <option value="2">Outros</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="0" selected>Em aberto</option>
+                            <option value="1">Atendimento</option>
+                            <option value="2">Finalizado</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label for="nivel">Nível</label>
+                        <select name="nivel" id="nivel" class="form-select">
+                            <option value="0" selected>Selecione</option>
+                            <option value="1">Nível 1</option>
+                            <option value="2">Nível 2</option>
+                            <option value="3">Nível 3</option>
+                            <option value="4">Nível 4</option>
+                            <option value="5">Nível 5</option>
+                        </select>
                     </div>
                 </div>
 
