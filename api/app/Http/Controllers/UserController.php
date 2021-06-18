@@ -39,6 +39,7 @@ class UserController extends Controller
         $newUser->name = $request->name;
         $newUser->password = $request->password;
         $newUser->username = $request->username;
+        $newUser->usertype = $request->usertype;
         $newUser->save();
 
         return $newUser;
@@ -52,7 +53,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return User::find($id);
     }
 
     /**
@@ -63,7 +64,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+       
     }
 
     /**
@@ -75,7 +76,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $existingUser = User::find($id);
+
+        if ($existingUser){
+           $existingUser->name = $request->name;
+           $existingUser->password = $request->password;
+           $existingUser->username = $request->username;
+           $existingUser->save();
+
+           return $existingUser;
+        }
+
+        return abort(404, 'User not found.');
     }
 
     /**
@@ -86,6 +98,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $existingUser = User::find($id);
+
+        if ( $existingUser ){
+            $existingUser->delete();
+            return "User successfully deleted.";
+        }
+
+        return "User not Found";
     }
 }

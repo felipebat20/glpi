@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Call as Call;
+use App\Models\User as User;
 
 class CallsController extends Controller
 {
@@ -13,7 +16,12 @@ class CallsController extends Controller
      */
     public function index()
     {
+        $calls = DB::table('users')
+            ->join('calls', 'users.id', '=', 'calls.user_id')
+            ->get();
         
+        return $calls;
+
     }
 
     /**
@@ -34,7 +42,15 @@ class CallsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newCall = new Call;
+        $newCall->title = $request->title;
+        $newCall->description = $request->description;
+        $newCall->filepath = $request->filepath;
+        $newCall->severity = $request->severity;
+        $newCall->user_id = $request->user_id;
+        $newCall->save();
+        
+        return $newCall;
     }
 
     /**
@@ -45,7 +61,9 @@ class CallsController extends Controller
      */
     public function show($id)
     {
-        //
+        $existingCall = Call::find($id);
+
+        return $existingCall;
     }
 
     /**
@@ -54,9 +72,9 @@ class CallsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function list($id)
     {
-        //
+        return Call::where('user_id', $id)->get();
     }
 
     /**
@@ -68,7 +86,25 @@ class CallsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $existingCall = Call::find($id);
+
+        if ($existingCall){
+            $existingCall->title = $request->title;
+            $existingCall->description = $request->description;
+            $existingCall->filepath = $request->filepath;
+            $existingCall->status = $request->status;
+            $existingCall->severity = $request->severity;
+            $existingCall->urgency = $request->urgency;
+            $existingCall->trend = $request->trend;
+            $existingCall->gut = $request->gut;
+            $existingCall->user_id = $request->user_id;
+            $existingCall->technician_id = $request->technician_id;
+            $existingCall->save();
+        }
+        
+        
+        return $existingCall;
+    
     }
 
     /**
@@ -79,6 +115,13 @@ class CallsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $existingCall = Call::find($id);
+
+        if ($existingCall){
+            $existingCall->delete();
+            return "User successfully deleted.";
+        }
+
+        return "Call not Found";
     }
 }

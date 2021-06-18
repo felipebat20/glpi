@@ -63,6 +63,7 @@ Route::prefix('/call')->group( function() {
     Route::get('/{id}', [CallsController::class, 'show']);
     Route::put('/{id}', [CallsController::class, 'update']);
     Route::delete('/{id}', [CallsController::class, 'destroy']);
+    Route::get('/list/{id}', [CallsController::class, 'list']);
 }
 );
 

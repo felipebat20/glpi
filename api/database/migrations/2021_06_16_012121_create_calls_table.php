@@ -18,10 +18,11 @@ class CreateCallsTable extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('filepath')->nullable();
-            $table->string('status');
+            $table->integer('status')->default(1);
             $table->integer('severity');
             $table->integer('urgency')->default(1);
             $table->integer('trend')->default(1);
+            $table->integer('gut')->default(0);
             $table->boolean('completed')->default(false);
             $table->timestamp('completed_at')->nullable();
             $table->foreignId('user_id');

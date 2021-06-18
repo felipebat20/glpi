@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Technician as Tech;
 
 class TechnicianController extends Controller
 {
@@ -13,7 +14,7 @@ class TechnicianController extends Controller
      */
     public function index()
     {
-        //
+        return Tech::orderBy('created_at', 'DESC')->get();
     }
 
     /**
@@ -34,7 +35,13 @@ class TechnicianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newTech = new Tech;
+        $newTech->name = $request->name;
+        $newTech->password = $request->password;
+        $newTech->username = $request->username;
+        $newTech->save();
+
+        return $newTech;
     }
 
     /**
@@ -45,7 +52,13 @@ class TechnicianController extends Controller
      */
     public function show($id)
     {
-        //
+        $existingTech = Tech::find($id);
+
+        if ($existingTech){
+            return $existingTech;
+        }
+
+        return abort(404);
     }
 
     /**
@@ -68,7 +81,17 @@ class TechnicianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $existingTech = Tech::find($id);
+
+        if ($existingTech){
+           $existingTech->name = $request->name;
+           $existingTech->password = $request->password;
+           $existingTech->username = $request->username;
+           $existingTech->save();
+
+           return $existingTech;
+        }
+
     }
 
     /**
@@ -79,6 +102,13 @@ class TechnicianController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $existingTech = Tech::find($id);
+
+        if ($existingTech){
+            $existingTech->delete();
+            return "User successfully deleted.";
+        }
+
+        return "User not Found";
     }
 }

@@ -9,9 +9,8 @@
 
 body {
     width: 100%;
-    min-height: 700px ;
     background: #0f0c29;
-    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #b5b5b5);
     background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
 }
 

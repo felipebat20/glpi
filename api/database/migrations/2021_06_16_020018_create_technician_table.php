@@ -13,11 +13,12 @@ class CreateTechnicianTable extends Migration
      */
     public function up()
     {
-        Schema::create('technician', function (Blueprint $table) {
+        Schema::create('technicians', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
+            $table->integer('usertype')->default(2);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateTechnicianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('technician');
+        Schema::dropIfExists('technicians');
     }
 }
