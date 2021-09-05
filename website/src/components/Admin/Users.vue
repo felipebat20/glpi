@@ -80,51 +80,46 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Código</th>
-                <th>Data</th>
-                <th>Descrição</th>
-                <th>Usuário</th>
-                <th>Prioridade</th>
-                <th>GUT</th>
-                <th>Status</th>
+                <th>Nome</th>
+                <th>Data de criação</th>
+                <th>Nome de usuário</th>
+                <th>Última atualização</th>
+                <th>Função</th>
               </tr>
             </thead>
             <tfoot></tfoot>
             <tbody>
-              <tr v-for="(call, index) in calls" :key="index" :id="tr+index" @click="selectItem(index, call)">
-                <td>DT 00{{ call.id }}</td>
-                <td>{{ moment(call.created_at).format("L") }}</td>
-                <td>{{ call.title }}</td>
-                <td>{{ call.name }}</td>
-                <td>{{ getPriority(call.gut) }}</td>
-                <td>{{ call.gut }}</td>
-                <td>{{ getStatus(call.status) }}</td>
+              <tr v-for="(user, index) in users" :key="index" :id="tr+index" @click="selectItem(index, user)">
+                <td>{{ user.name }}</td>
+                <td>{{ moment(user.created_at).format("L") }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ moment(user.updated_at).format("L") }}</td>
+                <td>{{ role[user.usertype - 1] }}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="lateral col-2">
-          <router-link to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
-            <i class="fas fa-users"></i> Usuários
-          </router-link>
-
           <router-link
             class="btn btn-outline-success m-2 w-100"
-            to="/chamado"
+            to="/admin/users/cadastro"
           >
             <i class="fas fa-plus"></i> Novo
           </router-link>
 
-          <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
+          <a @click.stop.prevent="handleEditUser" class="btn btn-outline-primary m-2 w-100">
               <i class="fas fa-pencil-alt"></i> Alterar
           </a>
 
-          <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteCall()">
+          <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteUser()">
             <i class="fas fa-minus-circle"></i> Excluir
           </button>
-          <router-link to="/" class="btn btn-outline-dark m-2 w-100"
-            >Sair <i class="fas fa-sign-out-alt text-danger"></i
-          ></router-link>
+          <a
+          href.stop.prevent="#"
+          @click="backRoute"
+          class="btn btn-outline-dark m-2 w-100"
+            ><i class="fas fa-arrow-circle-left"></i> Voltar
+          </a>
         </div>
       </div>
     </div>
@@ -139,25 +134,23 @@ export default {
 
   data() {
     return {
-      calls: [],
+      users: [],
       customUser: "",
       options: [
-        { value: "id", text: "Código" },
-        { value: "created_at", text: "Data" },
-        { value: "title", text: "Descrição" },
-        { value: "name", text: "Usuário" },
-        { value: "gut", text: "Prioridade" },
-        { value: "status", text: "Status" },
+        { value: "name", text: "Nome" },
+        { value: "created_at", text: "Data de criação" },
+        { value: "updated_at", text: "Última atualização" },
+        { value: "usertype", text: "Função" },
       ],
 
       filter: 0,
-      status: ["A atribuir", "Em atendimento", "Finalizado"],
+      role: ["Usuário", "Técnico", "Admin"],
       user: () => {},
       ascending: true,
       order: "asc",
       avatar_url: '../../assets/img/defaultProfilePhoto.png',
       tr: 'tr',
-      selectedCall: () => {},
+      selectedUser: () => {},
     };
   },
 
@@ -170,48 +163,31 @@ export default {
       this.$router.push({ name: "login" });
     }
 
-    this.getCalls();
+    this.getUsers();
 
     await this.getAvatar();
   },
 
   methods: {
-    getCalls() {
+    getUsers() {
       this.$http
-        .get("http://localhost:8000/api/calls")
+        .get("http://localhost:8000/api/users")
         .then((response) => {
-          this.calls = response.data;
+          this.users = response.data;
         })
         .catch((error) => {
           console.log(error);
         });
     },
 
-    getAssignedTechCalls() {},
-
-    getPriority(gut) {
-      if (gut > 80) {
-        return "Alta";
-      }
-      if (gut <= 40) {
-        return "Baixa";
-      }
-
-      return "Media";
-    },
-
-    getStatus(status) {
-      return this.status[status - 1];
-    },
-
-    async sortCalls() {
-      await this.calls.forEach(this.removePreviousStyle);
-      this.calls = _.orderBy(this.calls, this.filter, this.order);
-    },
-
     checkFilter() {
       console.log("Olá");
-      this.sortCalls();
+      this.sortUsers();
+    },
+
+    async sortUsers() {
+      await this.users.forEach(this.removePreviousStyle);
+      this.users = _.orderBy(this.users, this.filter, this.order);
     },
 
     changeOrder() {
@@ -222,7 +198,7 @@ export default {
         this.ascending = false;
         this.order = "asc";
       }
-      this.sortCalls();
+      this.sortUsers();
     },
 
     async getAvatar(){
@@ -237,11 +213,11 @@ export default {
             });
     },
 
-    async selectItem(index, call) {
-        await this.calls.forEach(this.removePreviousStyle);
+    async selectItem(index, user) {
+        await this.users.forEach(this.removePreviousStyle);
         const row = document.getElementById(this.tr+index);
         row.setAttribute('style', 'background: #777')
-        this.selectedCall = call;
+        this.selectedUser = user;
     },
 
     removePreviousStyle(element, index){
@@ -250,38 +226,38 @@ export default {
 
     },
 
-    handleEditCall() {
-        if (!this.selectedCall){
+    handleEditUser() {
+        if (!this.selectedUser){
             return false;
         }
         
-        this.saveCallInLocalStorage(this.selectedCall);
-        return this.$router.push({name: 'EditarChamado', params: { call: this.selectedCall }});
+        this.saveSelectedUserInLocalStorage(this.selectedUser);
+        // return this.$router.push({name: 'EditarUser', params: { selectedUser: this.selectedUser }});
     },
 
-    saveCallInLocalStorage(call){
-        localStorage.setItem('call', JSON.stringify(call));
-    },
-
-    deleteCall(){
-        if(!this.selectedCall) {
+    deleteUser(){
+        if(!this.selectedUser) {
             return;
         }
 
-        this.$http.delete(`http://localhost:8000/api/call/${this.selectedCall.id}`)
+        this.$http.delete(`http://localhost:8000/api/user/${this.selectedUser.id}`)
             .then( response => {
                 console.log(response.data);
-                this.getCalls();
+                this.getUsers();
             })
             .catch(err => {
                 console.log(err);
             });
+    },
+
+    backRoute() {
+        this.$router.go(-1);
     }
   },
 
   watch: {
     filter() {
-      this.sortCalls();
+      this.sortUsers();
     },
   },
 };

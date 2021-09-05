@@ -83,9 +83,8 @@
                 <th>Código</th>
                 <th>Data</th>
                 <th>Descrição</th>
-                <th>Usuário</th>
+                <th>Técnico responsável</th>
                 <th>Prioridade</th>
-                <th>GUT</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -95,19 +94,15 @@
                 <td>DT 00{{ call.id }}</td>
                 <td>{{ moment(call.created_at).format("L") }}</td>
                 <td>{{ call.title }}</td>
-                <td>{{ call.name }}</td>
+                <td>{{ getTech(call.technician_id) }}</td>
                 <td>{{ getPriority(call.gut) }}</td>
-                <td>{{ call.gut }}</td>
                 <td>{{ getStatus(call.status) }}</td>
               </tr>
             </tbody>
           </table>
+              <span v-if="calls.length < 1" class="my-3 col-12 d-block text-center">Você não possui chamados válidos.</span>
         </div>
         <div class="lateral col-2">
-          <router-link to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
-            <i class="fas fa-users"></i> Usuários
-          </router-link>
-
           <router-link
             class="btn btn-outline-success m-2 w-100"
             to="/chamado"
@@ -116,7 +111,7 @@
           </router-link>
 
           <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
-              <i class="fas fa-pencil-alt"></i> Alterar
+              <i class="far fa-eye"></i> Acompanhar
           </a>
 
           <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteCall()">
@@ -135,7 +130,7 @@
 import _ from "lodash";
 
 export default {
-  name: "AdminPanel",
+  name: "UserPanel",
 
   data() {
     return {
@@ -158,6 +153,7 @@ export default {
       avatar_url: '../../assets/img/defaultProfilePhoto.png',
       tr: 'tr',
       selectedCall: () => {},
+      techs: [],
     };
   },
 
@@ -171,6 +167,7 @@ export default {
     }
 
     this.getCalls();
+    this.getTechs();
 
     await this.getAvatar();
   },
@@ -178,7 +175,7 @@ export default {
   methods: {
     getCalls() {
       this.$http
-        .get("http://localhost:8000/api/calls")
+        .get(`http://localhost:8000/api/call/list/${this.user.id}`)
         .then((response) => {
           this.calls = response.data;
         })
@@ -186,8 +183,6 @@ export default {
           console.log(error);
         });
     },
-
-    getAssignedTechCalls() {},
 
     getPriority(gut) {
       if (gut > 80) {
@@ -273,10 +268,32 @@ export default {
                 console.log(response.data);
                 this.getCalls();
             })
+        .catch(err => {
+            console.log(err);
+        });
+    },
+
+    async getTechs(){
+        await this.$http.get('http://localhost:8000/api/technicians')
+            .then(response => {
+                this.techs = response.data;
+            })
             .catch(err => {
                 console.log(err);
             });
-    }
+    },
+
+    getTech(tech_id) {
+        console.log(tech_id);
+        const tech = this.techs.find(element => element.id === tech_id);
+
+        if(tech){
+            return tech.name;
+        }
+        return 'A atribuir';
+    },
+
+
   },
 
   watch: {

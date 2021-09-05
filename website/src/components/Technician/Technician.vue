@@ -91,7 +91,7 @@
             </thead>
             <tfoot></tfoot>
             <tbody>
-              <tr v-for="(call, index) in calls" :key="index" :id="tr+index" @click="selectItem(index, call)">
+              <tr v-for="(call, index) in assignedCalls" :key="index" :id="tr+index" @click="selectItem(index, call)">
                 <td>DT 00{{ call.id }}</td>
                 <td>{{ moment(call.created_at).format("L") }}</td>
                 <td>{{ call.title }}</td>
@@ -104,22 +104,23 @@
           </table>
         </div>
         <div class="lateral col-2">
-          <router-link to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
+          <button class="btn btn-outline-secondary m-2 w-100" disabled>
             <i class="fas fa-users"></i> Usuários
-          </router-link>
+          </button>
 
-          <router-link
+          <button
             class="btn btn-outline-success m-2 w-100"
             to="/chamado"
+            disabled
           >
             <i class="fas fa-plus"></i> Novo
-          </router-link>
+          </button>
 
           <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
-              <i class="fas fa-pencil-alt"></i> Alterar
+              <i class="far fa-eye"></i> Acompanhar
           </a>
 
-          <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteCall()">
+          <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteCall()" disabled>
             <i class="fas fa-minus-circle"></i> Excluir
           </button>
           <router-link to="/" class="btn btn-outline-dark m-2 w-100"
@@ -135,7 +136,7 @@
 import _ from "lodash";
 
 export default {
-  name: "AdminPanel",
+  name: "Technician",
 
   data() {
     return {
@@ -158,6 +159,7 @@ export default {
       avatar_url: '../../assets/img/defaultProfilePhoto.png',
       tr: 'tr',
       selectedCall: () => {},
+      assignedCalls: [],
     };
   },
 
@@ -170,9 +172,13 @@ export default {
       this.$router.push({ name: "login" });
     }
 
-    this.getCalls();
+    await this.getCalls();
 
     await this.getAvatar();
+    
+
+    await this.getAssignedTechCalls();
+
   },
 
   methods: {
@@ -186,8 +192,6 @@ export default {
           console.log(error);
         });
     },
-
-    getAssignedTechCalls() {},
 
     getPriority(gut) {
       if (gut > 80) {
@@ -205,8 +209,8 @@ export default {
     },
 
     async sortCalls() {
-      await this.calls.forEach(this.removePreviousStyle);
-      this.calls = _.orderBy(this.calls, this.filter, this.order);
+      await this.assignedCalls.forEach(this.removePreviousStyle);
+      this.assignedCalls = _.orderBy(this.assignedCalls, this.filter, this.order);
     },
 
     checkFilter() {
@@ -238,7 +242,7 @@ export default {
     },
 
     async selectItem(index, call) {
-        await this.calls.forEach(this.removePreviousStyle);
+        await this.assignedCalls.forEach(this.removePreviousStyle);
         const row = document.getElementById(this.tr+index);
         row.setAttribute('style', 'background: #777')
         this.selectedCall = call;
@@ -276,6 +280,15 @@ export default {
             .catch(err => {
                 console.log(err);
             });
+    },
+    
+    async getAssignedTechCalls() {
+        this.assignedCalls.splice(0);
+        await this.calls.forEach((call) => {
+            if (call.technician_id == this.user.id){
+                this.assignedCalls.push(call);
+            }
+        });
     }
   },
 
@@ -283,6 +296,10 @@ export default {
     filter() {
       this.sortCalls();
     },
+
+    calls(){
+        this.getAssignedTechCalls();
+    }
   },
 };
 </script>

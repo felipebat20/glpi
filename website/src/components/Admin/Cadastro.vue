@@ -3,7 +3,7 @@
 
         <div class="panel form-group col-6 mx-auto my-3  rounded-3 p-4">
             <div class="col mx-auto text-center my-3">
-                <img src="../img/glpilogo.png" class="img-fluid" alt="Logo GLPI">
+                <img src="../../assets/img/glpilogo.png" class="img-fluid" alt="Logo GLPI">
             </div>
             <div class="row mx-auto my-3  text-end align-items-center">
                 <label for="nome" class="col-3 p-0 ">Nome:</label>
@@ -26,7 +26,7 @@
             <div class="row mx-auto my-3  text-end align-items-center">
                 <label for="" class="col-3 p-0 ">Repita senha:</label>
                 <div class="col-9">
-                    <input type="password" v-model="confirm_password" class="form-control" :class="[parsedPassword ? '' : 'border border-danger']">
+                    <input type="password" @blur="sameAsPassword" v-model="confirm_password" class="form-control" :class="[parsedPassword ? '' : 'border border-danger']">
                     <span v-if="!parsedPassword" class="d-block text-danger text-start">As senhas não coincidem.</span>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             <div class="col-12 d-flex justify-content-end">
                 <div class="col-9 px-3 d-flex justify-content-between">
                     <button class="btn btn-primary col-5" @click="handleSubmit()">Cadastrar</button>
-                    <router-link to="/" class="btn btn-danger col-5">Voltar</router-link>
+                    <button @click="backRoute" class="btn btn-danger col-5">Voltar</button>
                 </div>
             </div>
         </div>
@@ -74,27 +74,14 @@ export default {
             if(this.user.name == ''){
                 return;
             }
-
-            
-
             if (this.parsedPassword === false){
                 return '';
             }
-
-            var checkuser = this.checkuser();
             
-            this.$http.post(`http://localhost:8000/api/${checkuser}/store`, this.user)
+            this.$http.post(`http://localhost:8000/api/user/store`, this.user)
             .then( response => {
                 if (response.status == 201 ){
-                    if (this.user.usertype == 2) {
-                        return this.$router.push( {name: 'principal', params: { user: response.data }});
-                    }
-
-                    if (this.user.usertype == 3) {
-                        return this.$router.push({name: 'admin', params: { user: response.data}});
-                    }
-
-                    this.$router.push({ name: 'principal', params: { user: response.data } });
+                    this.$router.go(-1);
                 } 
             })
             .catch( error => {
@@ -124,6 +111,10 @@ export default {
             if (this.user.usertype === 2) {
                 return 'technician'
             }
+        },
+
+        backRoute() {
+            this.$router.go(-1);
         }
     },
 
@@ -131,7 +122,7 @@ export default {
         confirm_password() {
             this.sameAsPassword();
         }
-    }
+    },
 }
 
 </script>

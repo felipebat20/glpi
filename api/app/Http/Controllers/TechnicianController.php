@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Technician as Tech;
+use App\Models\Users as User;
 
 class TechnicianController extends Controller
 {
@@ -14,7 +15,8 @@ class TechnicianController extends Controller
      */
     public function index()
     {
-        return Tech::orderBy('created_at', 'DESC')->get();
+        $techs = User::where('usertype', 2)->get();
+        return $techs;
     }
 
     /**
@@ -52,7 +54,9 @@ class TechnicianController extends Controller
      */
     public function show($id)
     {
-        $existingTech = Tech::find($id);
+        $matchThese = ['id' => $id, 'usertype' => 2];
+
+        $existingTech = User::find($matchThese);
 
         if ($existingTech){
             return $existingTech;

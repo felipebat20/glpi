@@ -2,7 +2,7 @@
   <div class="container-fluid h-100">
     <div class="panel form-group col-4 mx-auto rounded-3 py-3 mt-5">
       <div class="col mx-auto text-center my-3">
-        <img src="../img/glpilogo.png" class="img-responsive" alt="Logo GLPI" />
+        <img src="../assets/img/glpilogo.png" class="img-responsive" alt="Logo GLPI" />
       </div>
 
       <div class="col-10 mx-auto my-3">
@@ -60,8 +60,9 @@ export default {
             this.$http.post('http://localhost:8000/api/session/store', this.user)
             .then( response => {
                 if (response.status == 200 ){
+                    this.saveUserInLocalStorage(response.data);
                     if (response.data.usertype == 2) {
-                        return this.$router.push({name: 'principal', params: { user: response.data }});
+                        return this.$router.push({name: 'technician', params: { user: response.data }});
                     }
 
                     if (response.data.usertype == 3) {
@@ -74,6 +75,10 @@ export default {
             .catch( error => {
                 console.log(error);
             });
+      },
+
+      saveUserInLocalStorage(user){
+        localStorage.setItem('user', JSON.stringify(user));
       }
   }
 };

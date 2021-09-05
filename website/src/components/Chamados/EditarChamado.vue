@@ -1,0 +1,225 @@
+<template>
+    <div class="container-fluid  h-100 ">
+        <div class="panel form-group col-12 mx-auto  rounded-3 py-3 my-5">
+            <h1 class="text-center">Atualizar chamado</h1>
+            <form action="#" method="POST" class="col-11 mx-auto" @submit.prevent="handleSubmit">
+                <div class="row form-group">
+                    <div class="col-9 row">
+                        <div class="form-group text-left row my-3">
+                            <label for="usuario" class="pt-2">
+                                Título:
+                            </label>
+                            <input type="text" v-model="call.title" disabled class="form-control d-inline-block" placeholder="Digite o título do chamado aqui">
+                        </div>
+                        <div class="form-group text-left row my-3">
+                            <label for="descrição" class="pt-2">
+                                Descrição:
+                            </label>
+                            <textarea class="form-control" v-model="call.description"></textarea>
+                        </div>
+                        <div class="form-group text-left row my-3">
+                            <label for="descrição" class="pt-2">
+                                Anexos:
+                            </label>
+                                <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input" class="custom-file-input">
+                        </div>
+                        <div class="form-group my-3 d-flex justify-content-between">
+                            <div class="d-inline-block col-2 text-left">
+                                <label for="descrição" class="pt-2  ">
+                                    Ações:
+                                </label>
+                            </div>
+                           
+                            <div class="col-10">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Autor</th>
+                                        <th>Título</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tfoot></tfoot>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            </div>
+
+                        </div>
+                    <div class="col-3">
+                        
+                    </div>
+                    
+                    </div>
+                    <div class="col-3">
+                        <div class="col-12">
+                            <label for="nivel">Gravidade</label>
+                            <select name="nivel" v-model="call.severity" class="form-select">
+                                <option value="0" selected>Selecione</option>
+                                <option v-for="(item, index) in severity" :key="index" :value="item.value">{{ item.text }}</option>
+                            </select>
+                        </div>
+                        <div class="col-12 my-3">
+                            <label for="nivel">Urgência</label>
+                            <select name="nivel" v-model="call.urgency" class="form-select">
+                                <option value="0" selected>Selecione</option>
+                                <option v-for="(item, index) in urgency" :key="index" :value="item.value">{{ item.text }}</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="nivel">Tendência</label>
+                            <select name="nivel" v-model="call.trend" class="form-select">
+                                <option value="0" selected>Selecione</option>
+                                <option v-for="(item, index) in trend" :key="index" :value="item.value">{{ item.text }}</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="nivel" class="col-12 mt-5" id="techlabel">Atribuir ao técnico</label>
+                            <select name="nivel" v-model="selectedTech" class="form-select">
+                                <option value="0" selected>Selecione</option>
+                                <option v-for="(tech, index) in techs" :key="index" :value="tech.id">{{ tech.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-9 d-flex flex-row justify-content-between my-4">
+                        <a @click="$router.go(-1)" class="btn btn-warning px-5">Voltar</a>
+                        <button type="submit" class="btn btn-success px-5">Atualizar chamado</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'EditarChamado',
+
+    props: {
+
+    },
+
+    data() {
+        return {
+            user: () => {},
+            call: () => {},
+            severity: [
+                {value: 1, text: 'Sem gravidade'},
+                {value: 2, text: 'Pouco grave'},
+                {value: 3, text: 'Grave'},
+                {value: 4, text: 'Muito Grave'},
+                {value: 5, text: 'Extremamente Grave'},
+            ],
+
+            urgency: [
+                {value: 1, text: 'Longo prazo'},
+                {value: 2, text: 'Bastante prazo'},
+                {value: 3, text: 'Médio prazo'},
+                {value: 4, text: 'Curto prazo'},
+                {value: 5, text: 'O quanto antes'},
+            ],
+
+            trend: [
+                {value: 1, text: 'Não piora'},
+                {value: 2, text: 'Piora a longo prazo'},
+                {value: 3, text: 'Piora a médio prazo'},
+                {value: 4, text: 'Piora a médio prazo'},
+                {value: 5, text: 'Piora rapidamente'},
+            ],
+
+            selectedTech: 0,
+
+            techs: [],
+        }
+    },
+
+    mounted() {
+        if (localStorage.getItem("user")) {
+            this.user = JSON.parse(localStorage.getItem("user"));
+        }
+
+        if (!this.user) {
+            this.$router.push({ name: "login" });
+        }
+
+        if (localStorage.getItem("call")) {
+            this.call = JSON.parse(localStorage.getItem("call"));
+        }
+
+        if (!this.call) {
+            this.$router.go(-1);
+        }
+
+        this.selectedTech = this.call.technician_id;
+
+        this.getTechs();
+    },
+
+    methods: {
+        async getTechs(){
+            await this.$http.get('http://localhost:8000/api/technicians')
+                .then(response => {
+                    this.techs = response.data;
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+
+        handleSubmit(){
+            let gut = 0;
+            if((this.call.severity * this.call.urgency * this.call.trend) != 0) {
+                gut = this.call.severity * this.call.urgency * this.call.trend;
+            }
+
+            this.call.technician_id = this.selectedTech;
+            this.call.gut = gut;
+
+            if (this.call.status < 2) {
+                this.call.status = 2;
+            }
+            
+            this.$http.put(`http://localhost:8000/api/call/${this.call.id}`, this.call)
+                .then(response => {
+                    console.log(response.data, this.call);
+                    this.$router.go(-1);
+                })
+                .catch( err => {
+                    console.log(err);
+                });
+        }
+    }
+}
+</script>
+
+<style scoped>
+label {
+    display: flex;
+    width:20%;
+}
+
+input, textarea{
+    width: 80%;
+}
+
+textarea{
+    height: 100px;
+    resize: none;
+    overflow-y: auto;
+}
+
+.custom-file-input {
+    border: 1px red solid;
+    background: white;
+    padding: 0;
+}
+
+input#file-upload-button{
+    padding: 0;
+}
+
+#techlabel {
+    width: 100%;
+}
+</style>

@@ -1,10 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from './components/Login.vue'
-import Cadastro from './components/Cadastro.vue'
-import Principal from './components/Principal.vue'
-import Chamado from './components/Chamado.vue'
-import AdminPanel from './components/Admin/Admin.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Login from './components/Login.vue';
+//Chamados
+import Cadastro from './components/Admin/Cadastro.vue';
+import Principal from './components/User/Principal.vue';
+import UsersPanel from './components/Admin/Users.vue';
+import Chamado from './components/Chamados/Chamado.vue';
+import EditCall from './components/Chamados/EditarChamado.vue';
+import AdminPanel from './components/Admin/Admin.vue';
+import Technician from './components/Technician/Technician.vue';
 
 Vue.use(VueRouter)
 
@@ -14,7 +18,7 @@ const routes = [{
         component: Login
     },
     {
-        path: '/cadastro',
+        path: '/admin/users/cadastro',
         name: 'cadastro',
         component: Cadastro
     },
@@ -31,9 +35,27 @@ const routes = [{
         props: true,
     },
     {
+        path: '/chamado/editar',
+        name: 'EditarChamado',
+        component: EditCall,
+        props: true,
+    },
+    {
         path: '/admin',
         name: 'admin',
         component: AdminPanel,
+        props: true,
+    },
+    {
+        path: '/admin/users',
+        name: 'users',
+        component: UsersPanel,
+        props: true,
+    },
+    {
+        path: '/technician',
+        name: 'technician',
+        component: Technician,
         props: true,
     },
 ]
