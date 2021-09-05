@@ -3,7 +3,7 @@
     <div class="panel form-group col-12 mx-auto rounded-3 py-3 my-3 h-100">
       <div class="row px-4 d-flex justify-content-center">
         <img
-          src="..\..\assets\glpiprincipal.png"
+          src="./glpiprincipal.png"
           class="img-fluid d-inline-block col-3"
           alt=""
         />
@@ -254,7 +254,7 @@ export default {
         if (!this.selectedCall){
             return false;
         }
-        
+
         this.saveCallInLocalStorage(this.selectedCall);
         return this.$router.push({name: 'EditarChamado', params: { call: this.selectedCall }});
     },
