@@ -1,19 +1,20 @@
 <template>
-  <div class="container-fluid h-100">
-    <div class="panel form-group col-4 mx-auto rounded-3 py-3 mt-5">
-      <div class="col mx-auto text-center my-3">
+  <div class="col-12">
+    <div class="panel form-group col-12 col-md-5 col-lg-4 col-xl-5 col mx-auto rounded-3 py-3 my-5">
+      <div class="col-10 mx-auto text-center my-3">
         <img src="../assets/img/glpilogo.png" class="img-responsive" alt="Logo GLPI" />
-      </div>
 
-      <div class="col-10 mx-auto my-3">
-        <input
-          type="text"
-          class="form-control"
-          v-model="user.username"
-          placeholder="Usuário"
-        />
-      </div>
-      <div class="col-10 mx-auto my-3">
+
+        <div class="row my-3">
+          <input
+            type="text"
+            class="form-control"
+            v-model="user.username"
+            placeholder="Usuário"
+          />
+        </div>
+
+      <div class="row my-3">
         <input
           type="password"
           class="form-control"
@@ -22,14 +23,16 @@
           @keypress.enter="handleSubmit()"
         />
       </div>
-      <div class="col-10 mx-auto my-4 d-flex justify-content-center">
-        <button class="btn btn-success col-4 mx-auto" @click="handleSubmit()">
+
+      <div class="row my-4 justify-content-between">
+        <button class="btn btn-success col-5" @click="handleSubmit()">
           Entrar
         </button>
 
-        <router-link to="/cadastro" class="btn btn-secondary col-4 mx-auto"
+        <router-link to="/cadastro" class="btn btn-secondary col-5"
           >Cadastrar</router-link
         >
+        </div>
       </div>
     </div>
   </div>
@@ -72,6 +75,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

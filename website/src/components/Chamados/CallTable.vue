@@ -156,7 +156,7 @@ export default {
         },
 
         handleEditCall(call) {
-            this.saveCallInLocalStorage(call);
+            // this.saveCallInLocalStorage(call);
 
             return this.$router.push({name: 'EditarChamado', params: { call }});
         },

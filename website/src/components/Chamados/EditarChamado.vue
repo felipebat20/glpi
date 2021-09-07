@@ -103,7 +103,7 @@ export default {
     data() {
         return {
             user: () => {},
-            call: () => {},
+            call: this.$router.params.call,
             severity: [
                 {value: 1, text: 'Sem gravidade'},
                 {value: 2, text: 'Pouco grave'},
@@ -135,17 +135,17 @@ export default {
     },
 
     mounted() {
-        if (localStorage.getItem("user")) {
-            this.user = JSON.parse(localStorage.getItem("user"));
-        }
+        // if (localStorage.getItem("user")) {
+        //     this.user = JSON.parse(localStorage.getItem("user"));
+        // }
 
         if (!this.user) {
             this.$router.push({ name: "login" });
         }
 
-        if (localStorage.getItem("call")) {
-            this.call = JSON.parse(localStorage.getItem("call"));
-        }
+        // if (localStorage.getItem("call")) {
+        //     this.call = JSON.parse(localStorage.getItem("call"));
+        // }
 
         if (!this.call) {
             this.$router.go(-1);

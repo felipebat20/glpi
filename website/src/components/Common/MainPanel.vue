@@ -1,129 +1,58 @@
 <template>
-  <div class="container-fluid h-100">
-    <div class="panel form-group col-12 mx-auto rounded-3 py-3 my-3 h-100">
-      <div class="row px-4 d-flex justify-content-center">
-        <img
-          src="./glpiprincipal.png"
-          class="img-fluid d-inline-block col-3"
-          alt=""
-        />
-        <h1 class="d-inline-block text-center col-6 pt-3">
-          Bem vindo ao GLPI.
-        </h1>
-        <div class="col-3">
-            <div class="text-end">
-                <img
-                  :src="avatar_url"
-                  class="avatar d-inline-block"
-                  alt=""
-                >
-                <span class="d-block">
-                  {{ user.name }}
-                  <i class="fas fa-user-edit mx-2" />
-                </span>
-            </div>
-        </div>
+    <div class="panel card my-3">
+      <div class="card-title p-3 pb-0">
+        <h3>
+          Chamados
+        </h3>
       </div>
 
-      <div class="col-12 px-4 ">
-        <form
-          action="#"
-          method="POST"
-          class="form-group"
-        >
-          <div class="form-header col-10 d-flex flex-row justify-content-between">
-            <div class="form-group col-4">
-              <label for="filter">Campo</label>
-              <div class="d-flex justify-content-center">
-                <select
-                  name="filter"
-                  id="filter"
-                  class="form-select"
-                  v-model="filter"
-                  @click="checkFilter"
-                >
-                  <option selected value="0">Selecione</option>
-                  <option
-                    v-for="(option, index) in options"
-                    :key="index"
-                    :value="option.value"
-                  >
-                    {{ option.text }}
-                  </option>
-                </select>
+      <hr />
 
-                <button
-                  type="button"
-                  class="btn btn-outline-dark pt-1 px-2.5 pb-0"
-                  @click="changeOrder"
-                >
-                  <i
-                    :class="[ascending ? 'fas fa-sort-up' : 'fas fa-sort-down']"
-                  ></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="input-group">
-                <label for="search" class="col-12">Pesquisa</label>
-                <input
-                  type="text"
-                  id="search"
-                  name="search"
-                  class="form-control"
-                  aria-label="Recipient"
-                />
-                <div class="input-group-append">
-                  <span class="input-group-text p-0">
-                    <a href="#" class="btn btn-primary" id="basic-addon-2"
-                      ><i class="fas fa-search"></i
-                    ></a>
-                  </span>
-                </div>
-              </div>
-            </div>
+      <div>
+        <CallFilter />
+
+        <div class="row px-4">
+          <CallTable
+            :calls="calls"
+          />
+          <div class="lateral col-2">
+            <router-link v-if="isAdmin" to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
+              <i class="fas fa-users"></i> Usuários
+            </router-link>
+
+            <router-link
+              class="btn btn-outline-success m-2 w-100"
+              to="/chamado"
+            >
+              <i class="fas fa-plus"></i> Novo
+            </router-link>
+
+            <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
+                <i class="fas fa-pencil-alt"></i> Alterar
+            </a>
+
+            <router-link to="/" class="btn btn-outline-dark m-2 w-100"
+              >Sair <i class="fas fa-sign-out-alt text-danger"></i
+            ></router-link>
           </div>
-        </form>
-      </div>
-
-      <div class="row px-4">
-        <CallTable
-          :calls="calls"
-        />
-        <div class="lateral col-2">
-          <router-link v-if="isAdmin" to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
-            <i class="fas fa-users"></i> Usuários
-          </router-link>
-
-          <router-link
-            class="btn btn-outline-success m-2 w-100"
-            to="/chamado"
-          >
-            <i class="fas fa-plus"></i> Novo
-          </router-link>
-
-          <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
-              <i class="fas fa-pencil-alt"></i> Alterar
-          </a>
-
-          <router-link to="/" class="btn btn-outline-dark m-2 w-100"
-            >Sair <i class="fas fa-sign-out-alt text-danger"></i
-          ></router-link>
         </div>
       </div>
+
     </div>
-  </div>
 </template>
 
 <script>
 import orderBy from "lodash/_baseOrderBy";
-import CallTable from './CallsTable.vue';
+import CallTable from '../Chamados/CallTable.vue';
+import CallFilter from '../Chamados/CallFilter.vue';
 import { mapGetters } from 'vuex';
-// import gate  from '../../enums/gates';
 
 export default {
   name: "MainPanel",
-  components: { CallTable },
+  components: {
+    CallTable,
+    CallFilter,
+  },
 
   data() {
     return {
@@ -190,34 +119,6 @@ export default {
       this.calls = orderBy(this.calls, this.filter, this.order);
     },
 
-    checkFilter() {
-      console.log("Olá");
-      this.sortCalls();
-    },
-
-    changeOrder() {
-      if (!this.ascending) {
-        this.ascending = true;
-        this.order = "desc";
-      } else {
-        this.ascending = false;
-        this.order = "asc";
-      }
-      this.sortCalls();
-    },
-
-    async getAvatar(){
-        await this.$http.get(`https://api.github.com/users/${this.user.username}`)
-          .then( response => {
-              if (response.status == 200 ){
-                  this.avatar_url = response.data.avatar_url;
-              }
-          })
-          .catch( error => {
-              console.log(error);
-          });
-    },
-
     async selectItem(index, call) {
         await this.calls.forEach(this.removePreviousStyle);
         const row = document.getElementById(this.tr+index);
@@ -269,9 +170,5 @@ export default {
 </script>
 
 <style scoped>
-    .avatar {
-        width: 40%;
-        border-radius: 50%;
-        margin-right: 0 ;
-    }
+
 </style>
