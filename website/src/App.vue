@@ -16,7 +16,7 @@
 
 <script>
   import NavigationBar from './components/NavigationBar.vue';
-  import Footer from './components/Common/Footer.vue';
+  import Footer from './components/Common/Footer';
 
 export default {
   name: 'App',

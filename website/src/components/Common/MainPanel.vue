@@ -30,10 +30,6 @@
             <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
                 <i class="fas fa-pencil-alt"></i> Alterar
             </a>
-
-            <router-link to="/" class="btn btn-outline-dark m-2 w-100"
-              >Sair <i class="fas fa-sign-out-alt text-danger"></i
-            ></router-link>
           </div>
         </div>
       </div>

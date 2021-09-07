@@ -5,9 +5,6 @@ const getDefaultState = () => {
           type: '',
           username: '',
       },
-
-      calls: [],
-      call: {},
     };
   };
 
@@ -20,7 +17,7 @@ const getDefaultState = () => {
 
   const actions = {
     setUserProperties: ({ commit }, props) => commit('newUserProperties', props),
-    // setUserState: ({ commit }) => commit('reset_user_state'),
+    resetUserState: ({ commit }) => commit('reset_user_state'),
     setUserState: ({ commit }, user) => commit('newUser', user),
   };
 
@@ -34,22 +31,7 @@ const getDefaultState = () => {
         username: username ? username : state.user.username,
       }
     },
-    newShowModal: (state, show_modal)=> state.modal.show_modal = show_modal,
     reset_user_state: (state) => Object.assign(state, getDefaultState()),
-    newModalProperties: (state, props) => {
-      const {
-        name = '',
-        type = '',
-        username = '',
-      } = props;
-
-      state.modal = {
-        ...state.modal,
-        name: name ? name : state.modal.name,
-        type: type ? type : state.modal.type,
-        username: username ? username : state.modal.username,
-      };
-    }
   };
 
   export default {

@@ -47,10 +47,11 @@
                         >
                     </span>
 
-                    <div class="dropdown-menu" :class="getCurrentDropdown">
-                        <button class="dropdown-item" type="button">Action</button>
-                        <button class="dropdown-item" type="button">Another action</button>
-                        <button class="dropdown-item" type="button">Something else here</button>
+                    <div class="dropdown-menu" :class="getCurrentDropdown" @click="is_selecting = false">
+                        <button class="dropdown-item" type="button">Editar perfil</button>
+                        <button class="dropdown-item" type="button" @click="logout()">
+                            Sair
+                        </button>
                     </div>
                 </div>
             </div>
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'NavigationBar',
@@ -96,7 +97,8 @@ export default {
     },
 
     methods: {
-        async getAvatar(){
+        ...mapActions(['resetUserState']),
+        async getAvatar() {
             await this.$http.get(`https://api.github.com/users/${this.getUser.username}`)
             .then( response => {
                 if (response.status == 200 ){
@@ -107,6 +109,11 @@ export default {
                 console.log(error);
             });
         },
+
+        logout() {
+            this.resetUserState();
+            this.$router.push('/', {name: 'login'})
+        }
     }
 }
 </script>
