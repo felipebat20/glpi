@@ -2,9 +2,12 @@ const getDefaultState = () => {
     return {
       user: {
           name: '',
-          tipo: '',
+          type: '',
           username: '',
-      }
+      },
+
+      calls: [],
+      call: {},
     };
   };
 
@@ -17,11 +20,20 @@ const getDefaultState = () => {
 
   const actions = {
     setUserProperties: ({ commit }, props) => commit('newUserProperties', props),
-    setUserState: ({ commit }) => commit('reset_user_state'),
+    // setUserState: ({ commit }) => commit('reset_user_state'),
+    setUserState: ({ commit }, user) => commit('newUser', user),
   };
 
   const mutations = {
-    newMultipleContentLines: (state, lines)=> state.modal.content_has_multiple_lines = lines,
+    newUser: (state, user) => {
+      const { name, user_type, username } = user;
+      state.user = {
+        ...state.user,
+        name: name ? name : state.user.name,
+        type: user_type ? user_type : state.user.user_type,
+        username: username ? username : state.user.username,
+      }
+    },
     newShowModal: (state, show_modal)=> state.modal.show_modal = show_modal,
     reset_user_state: (state) => Object.assign(state, getDefaultState()),
     newModalProperties: (state, props) => {

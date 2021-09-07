@@ -115,10 +115,6 @@
             <i class="fas fa-plus"></i> Novo
           </button>
 
-          <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
-              <i class="far fa-eye"></i> Acompanhar
-          </a>
-
           <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteCall()" disabled>
             <i class="fas fa-minus-circle"></i> Excluir
           </button>

@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
   name: "Login",
@@ -50,36 +51,24 @@ export default {
   },
 
   methods: {
-      handleSubmit() {
-          if(this.user.username == ''){
-                return;
-            }
+    ...mapActions(['setUserState']),
+    handleSubmit() {
+        this.$http.post('http://localhost:8000/api/session/store', this.user)
+        .then( response => {
+          if (response.status == 200 ){
+              this.saveUserInLocalStorage(response.data);
+              this.setUserState(response.data)
+              return this.$router.push({name: 'principal', params: { user: response.data }});
+          }
+        })
+        .catch( error => {
+            console.log(error);
+        });
+    },
 
-            console.log(this.user)
-
-            this.$http.post('http://localhost:8000/api/session/store', this.user)
-            .then( response => {
-                if (response.status == 200 ){
-                    this.saveUserInLocalStorage(response.data);
-                    if (response.data.usertype == 2) {
-                        return this.$router.push({name: 'technician', params: { user: response.data }});
-                    }
-
-                    if (response.data.usertype == 3) {
-                        return this.$router.push({name: 'admin', params: { user: response.data }});
-                    }
-
-                    this.$router.push({name: 'principal', params: { user: response.data }});
-                } 
-            })
-            .catch( error => {
-                console.log(error);
-            });
-      },
-
-      saveUserInLocalStorage(user){
-        localStorage.setItem('user', JSON.stringify(user));
-      }
+    saveUserInLocalStorage(user){
+      localStorage.setItem('user', JSON.stringify(user));
+    }
   }
 };
 </script>

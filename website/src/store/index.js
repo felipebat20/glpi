@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import flow from './modules/flow';
+import user from './modules/user';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    flow,
+    user,
   }
 });

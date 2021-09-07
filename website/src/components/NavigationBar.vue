@@ -12,8 +12,8 @@
             Admin
         </router-link>
 
-        <router-link to="/">
-            Principal
+        <router-link to="/cadastro">
+            Cadastro
         </router-link>
 
         <router-link to="/">

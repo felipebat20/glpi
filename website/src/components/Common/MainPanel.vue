@@ -3,6 +3,7 @@
     <div class="panel form-group col-12 mx-auto rounded-3 py-3 my-3 h-100">
       <div class="row px-4 d-flex justify-content-center">
         <img
+          src="./glpiprincipal.png"
           class="img-fluid d-inline-block col-3"
           alt=""
         />
@@ -16,13 +17,20 @@
                   class="avatar d-inline-block"
                   alt=""
                 >
-                <span class="d-block">{{ user.name }}<i class="fas fa-user-edit mx-2"></i></span>
+                <span class="d-block">
+                  {{ user.name }}
+                  <i class="fas fa-user-edit mx-2" />
+                </span>
             </div>
         </div>
       </div>
 
       <div class="col-12 px-4 ">
-        <form action="#" method="POST" class="form-group">
+        <form
+          action="#"
+          method="POST"
+          class="form-group"
+        >
           <div class="form-header col-10 d-flex flex-row justify-content-between">
             <div class="form-group col-4">
               <label for="filter">Campo</label>
@@ -79,50 +87,28 @@
       </div>
 
       <div class="row px-4">
-        <div class="tabela col-10">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Data de criação</th>
-                <th>Nome de usuário</th>
-                <th>Última atualização</th>
-                <th>Função</th>
-              </tr>
-            </thead>
-            <tfoot></tfoot>
-            <tbody>
-              <tr v-for="(user, index) in users" :key="index" :id="tr+index" @click="selectItem(index, user)">
-                <td>{{ user.name }}</td>
-                <td>{{ moment(user.created_at).format("L") }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ moment(user.updated_at).format("L") }}</td>
-                <td>{{ role[user.user_type] }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <CallTable
+          :calls="calls"
+        />
         <div class="lateral col-2">
+          <router-link v-if="isAdmin" to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
+            <i class="fas fa-users"></i> Usuários
+          </router-link>
+
           <router-link
             class="btn btn-outline-success m-2 w-100"
-            to="/admin/users/cadastro"
+            to="/chamado"
           >
             <i class="fas fa-plus"></i> Novo
           </router-link>
 
-          <a @click.stop.prevent="handleEditUser" class="btn btn-outline-primary m-2 w-100">
+          <a @click.stop.prevent="handleEditCall" class="btn btn-outline-primary m-2 w-100">
               <i class="fas fa-pencil-alt"></i> Alterar
           </a>
 
-          <button type="button" class="btn btn-outline-danger m-2 w-100" @click="deleteUser()">
-            <i class="fas fa-minus-circle"></i> Excluir
-          </button>
-          <a
-          href.stop.prevent="#"
-          @click="backRoute"
-          class="btn btn-outline-dark m-2 w-100"
-            ><i class="fas fa-arrow-circle-left"></i> Voltar
-          </a>
+          <router-link to="/" class="btn btn-outline-dark m-2 w-100"
+            >Sair <i class="fas fa-sign-out-alt text-danger"></i
+          ></router-link>
         </div>
       </div>
     </div>
@@ -130,35 +116,45 @@
 </template>
 
 <script>
-import _ from "lodash";
+import orderBy from "lodash/_baseOrderBy";
+import CallTable from './CallsTable.vue';
+import { mapGetters } from 'vuex';
+// import gate  from '../../enums/gates';
 
 export default {
-  name: "AdminPanel",
+  name: "MainPanel",
+  components: { CallTable },
 
   data() {
     return {
-      users: [],
+      calls: [],
       customUser: "",
       options: [
-        { value: "name", text: "Nome" },
-        { value: "created_at", text: "Data de criação" },
-        { value: "updated_at", text: "Última atualização" },
-        { value: "user_type", text: "Função" },
+        { value: "id", text: "Código" },
+        { value: "created_at", text: "Data" },
+        { value: "title", text: "Descrição" },
+        { value: "name", text: "Usuário" },
+        { value: "gut", text: "Prioridade" },
+        { value: "status", text: "Status" },
       ],
-
       filter: 0,
-      role: {
-        user: "Usuário",
-        technician: "Técnico",
-        admin: "Admin",
-      },
       user: () => {},
       ascending: true,
       order: "asc",
       avatar_url: '../../assets/img/defaultProfilePhoto.png',
-      tr: 'tr',
-      selectedUser: () => {},
+      selectedCall: () => {},
     };
+  },
+
+  computed: {
+    ...mapGetters(['getUser']),
+    isAdmin () {
+        return this.user.user_type == 'admin';
+    },
+
+    isTechnician() {
+        return this.user.user_type == 'technician';
+    }
   },
 
   async mounted() {
@@ -170,31 +166,33 @@ export default {
       this.$router.push({ name: "login" });
     }
 
-    this.getUsers();
+    this.getCalls();
 
     await this.getAvatar();
   },
 
   methods: {
-    getUsers() {
+    getCalls() {
       this.$http
-        .get("http://localhost:8000/api/users")
+        .get("http://localhost:8000/api/calls")
         .then((response) => {
-          this.users = response.data;
+          this.calls = response.data;
         })
         .catch((error) => {
           console.log(error);
         });
     },
 
-    checkFilter() {
-      console.log("Olá");
-      this.sortUsers();
+    getAssignedTechCalls() {},
+
+    async sortCalls() {
+      await this.calls.forEach(this.removePreviousStyle);
+      this.calls = orderBy(this.calls, this.filter, this.order);
     },
 
-    async sortUsers() {
-      await this.users.forEach(this.removePreviousStyle);
-      this.users = _.orderBy(this.users, this.filter, this.order);
+    checkFilter() {
+      console.log("Olá");
+      this.sortCalls();
     },
 
     changeOrder() {
@@ -205,26 +203,26 @@ export default {
         this.ascending = false;
         this.order = "asc";
       }
-      this.sortUsers();
+      this.sortCalls();
     },
 
     async getAvatar(){
         await this.$http.get(`https://api.github.com/users/${this.user.username}`)
-            .then( response => {
-                if (response.status == 200 ){
-                    this.avatar_url = response.data.avatar_url;
-                } 
-            })
-            .catch( error => {
-                console.log(error);
-            });
+          .then( response => {
+              if (response.status == 200 ){
+                  this.avatar_url = response.data.avatar_url;
+              }
+          })
+          .catch( error => {
+              console.log(error);
+          });
     },
 
-    async selectItem(index, user) {
-        await this.users.forEach(this.removePreviousStyle);
+    async selectItem(index, call) {
+        await this.calls.forEach(this.removePreviousStyle);
         const row = document.getElementById(this.tr+index);
         row.setAttribute('style', 'background: #777')
-        this.selectedUser = user;
+        this.selectedCall = call;
     },
 
     removePreviousStyle(element, index){
@@ -233,38 +231,38 @@ export default {
 
     },
 
-    handleEditUser() {
-        if (!this.selectedUser){
+    handleEditCall() {
+        if (!this.selectedCall){
             return false;
         }
-        
-        this.saveSelectedUserInLocalStorage(this.selectedUser);
-        // return this.$router.push({name: 'EditarUser', params: { selectedUser: this.selectedUser }});
+
+        this.saveCallInLocalStorage(this.selectedCall);
+        return this.$router.push({name: 'EditarChamado', params: { call: this.selectedCall }});
     },
 
-    deleteUser(){
-        if(!this.selectedUser) {
+    saveCallInLocalStorage(call){
+        localStorage.setItem('call', JSON.stringify(call));
+    },
+
+    deleteCall(){
+        if(!this.selectedCall) {
             return;
         }
 
-        this.$http.delete(`http://localhost:8000/api/user/${this.selectedUser.id}`)
+        this.$http.delete(`http://localhost:8000/api/call/${this.selectedCall.id}`)
             .then( response => {
                 console.log(response.data);
-                this.getUsers();
+                this.getCalls();
             })
             .catch(err => {
                 console.log(err);
             });
     },
-
-    backRoute() {
-        this.$router.go(-1);
-    }
   },
 
   watch: {
     filter() {
-      this.sortUsers();
+      this.sortCalls();
     },
   },
 };

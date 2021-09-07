@@ -33,7 +33,7 @@
             <div class="row mx-auto my-3  text-end align-items-center">
                 <label for="" class="col-3 p-0 ">Tipo:</label>
                 <div class="col-9">
-                    <select v-model="user.usertype" class="form-select" aria-label="Default select example">
+                    <select v-model="user.user_type" class="form-select" aria-label="Default select example">
                         <option selected>Selecione uma opção</option>
                         <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.text }}</option>
                     </select>
@@ -61,8 +61,9 @@ export default {
                 usertype: '',
             },
             options: [
-                { text: 'Usuário', value: 1 },
-                { text: 'Técnico', value: 2 }
+                { text: 'Usuário', value: 'user' },
+                { text: 'Técnico', value: 'technician' },
+                { text: 'Admin', value: 'admin' },
             ],    
             confirm_password: '',
             parsedPassword: true,
