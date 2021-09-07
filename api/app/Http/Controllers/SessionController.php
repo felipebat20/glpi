@@ -12,20 +12,16 @@ class SessionController extends Controller
 {
     public function store(Request $request)
     {
-        $matchThese = ['username' => $request->username, 'password' => bcrypt($request->password, $request->username)];
+        $hash = crypt($request->password, $request->username);
+        $matchThese = ['username' => $request->username, 'password' => $hash ];
 
         $user = User::where($matchThese)->first();
-
 
         if ($user) {
             return $user;
         }
 
-        $user = User::where('username', $request->username);
-        if($user = $user->usertype === 3)
-            return $user;
-
-        return abort(404, 'User not found');
+        return false;
     }
 
     public function destroy($id)

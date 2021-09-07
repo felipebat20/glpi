@@ -1,16 +1,15 @@
 <template>
   <div id="app">
-    <div class="container">
-      i
-      <router-view/>
-    </div>
+      <NavigationBar />
+      <router-view />
   </div>
 </template>
 
 <script>
-
+  import NavigationBar from './components/NavigationBar.vue';
 export default {
   name: 'App',
+  components: { NavigationBar },
 }
 </script>
 
@@ -21,7 +20,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: 100vh;
   background: #0f0c29;
   background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29);

@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Login from './components/Login.vue';
+import Login from '../components/Login.vue';
 //Chamados
-import Cadastro from './components/Admin/Cadastro.vue';
-import Principal from './components/User/Principal.vue';
-import UsersPanel from './components/Admin/Users.vue';
-import Chamado from './components/Chamados/Chamado.vue';
-import EditCall from './components/Chamados/EditarChamado.vue';
-import AdminPanel from './components/Admin/Admin.vue';
-import Technician from './components/Technician/Technician.vue';
+import Cadastro from '../components/Admin/Cadastro.vue';
+import Principal from '../components/User/Principal.vue';
+import UsersPanel from '../components/Admin/Users.vue';
+import Chamado from '../components/Chamados/Chamado.vue';
+import EditCall from '../components/Chamados/EditarChamado.vue';
+import AdminPanel from '../components/Admin/Admin.vue';
+import Technician from '../components/Technician/Technician.vue';
 
 Vue.use(VueRouter)
 
