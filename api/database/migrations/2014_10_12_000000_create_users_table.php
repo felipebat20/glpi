@@ -15,19 +15,15 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->integer('usertype')->default(1);
+            $table->string('name', 100);
+            $table->string('username', 50)->unique();
+            $table->string('email', 100)->unique()->nullable();
+            $table->enum('user_type', ['user', 'technician', 'admin'])->default('user');
             $table->string('password');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('users');

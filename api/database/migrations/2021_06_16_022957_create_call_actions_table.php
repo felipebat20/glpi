@@ -15,11 +15,15 @@ class CreateCallActionsTable extends Migration
     {
         Schema::create('call_actions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('technician_id')->nullable();
+            $table->unsignedBigInteger('call_id');
             $table->string('description');
-            $table->foreignId('user_id');
-            $table->foreignId('technician_id')->nullable();
-            $table->foreignId('call_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('technician_id')->references('id')->on('users');
+            $table->foreign('call_id')->references('id')->on('calls');
         });
     }
 

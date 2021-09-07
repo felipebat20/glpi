@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::where('usertype', '<>', 3)->get();
+        return User::where('user_type', '<>', 3)->get();
     }
 
     public function create()
@@ -28,7 +28,7 @@ class UserController extends Controller
         $newUser->name = $request->name;
         $newUser->password = crypt($request->password, $request->username);
         $newUser->username = $request->username;
-        $newUser->usertype = $request->usertype;
+        $newUser->user_type = $request->user_type;
         $newUser->save();
 
         return $newUser;
@@ -41,7 +41,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-       
+
     }
 
     public function update(Request $request, $id)
