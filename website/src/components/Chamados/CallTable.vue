@@ -160,6 +160,21 @@ export default {
 
             return this.$router.push({name: 'EditarChamado', params: { call }});
         },
+
+        deleteCall(){
+            if(!this.selectedCall) {
+                return;
+            }
+
+            this.$http.delete(`http://localhost:8000/api/call/${this.selectedCall.id}`)
+                .then( response => {
+                    console.log(response.data);
+                    this.getCalls();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
     },
 };
 </script>

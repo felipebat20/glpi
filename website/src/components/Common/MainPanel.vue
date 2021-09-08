@@ -74,20 +74,16 @@ export default {
   computed: {
     ...mapGetters(['getUser']),
     isAdmin () {
-        return this.user.user_type == 'admin';
+        return this.getUser.type == 'admin';
     },
 
     isTechnician() {
-        return this.user.user_type == 'technician';
+        return this.getUser.type == 'technician';
     }
   },
 
   async mounted() {
-    if (localStorage.getItem("user")) {
-      this.user = JSON.parse(localStorage.getItem("user"));
-    }
-
-    if (!this.user) {
+    if (!this.getUser.name) {
       this.$router.push({ name: "login" });
     }
 
@@ -139,21 +135,6 @@ export default {
 
     saveCallInLocalStorage(call){
         localStorage.setItem('call', JSON.stringify(call));
-    },
-
-    deleteCall(){
-        if(!this.selectedCall) {
-            return;
-        }
-
-        this.$http.delete(`http://localhost:8000/api/call/${this.selectedCall.id}`)
-            .then( response => {
-                console.log(response.data);
-                this.getCalls();
-            })
-            .catch(err => {
-                console.log(err);
-            });
     },
   },
 

@@ -2,13 +2,13 @@
     <div class="row bg-light px-2" id="nav">
         <div class="nav">
             <div class="d-flex align-content-center">
-                <router-link class="nav-link" to="/">
+                <router-link class="nav-link" to="/home">
                     <img src="@/assets/glpiprincipal.png" class="img-fluid" alt="">
                 </router-link>
             </div>
 
             <div class="row align-content-center">
-                <router-link class="nav-link" to="/">
+                <router-link class="nav-link" to="/home">
                     Principal
                 </router-link>
             </div>
