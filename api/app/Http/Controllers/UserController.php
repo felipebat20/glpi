@@ -7,11 +7,6 @@ use App\Models\Users as User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return User::where('user_type', '<>', 3)->get();

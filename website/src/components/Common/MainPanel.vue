@@ -12,9 +12,7 @@
         <CallFilter />
 
         <div class="row px-4">
-          <CallTable
-            :calls="calls"
-          />
+          <CallTable />
           <div class="lateral col-2">
             <router-link v-if="isAdmin" to="/admin/users" class="btn btn-outline-secondary m-2 w-100">
               <i class="fas fa-users"></i> Usuários
@@ -41,7 +39,7 @@
 import orderBy from "lodash/_baseOrderBy";
 import CallTable from '../Chamados/CallTable.vue';
 import CallFilter from '../Chamados/CallFilter.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: "MainPanel",
@@ -72,7 +70,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getUser']),
+    ...mapGetters([
+      'getUser',
+      'getCalls'
+    ]),
     isAdmin () {
         return this.getUser.type == 'admin';
     },
@@ -82,27 +83,18 @@ export default {
     }
   },
 
-  async mounted() {
+  mounted() {
     this.$nextTick(function () {
       if (!this.getUser.name) {
         this.$router.push({ name: "login" });
       }
-    }),
+        this.setCalls(this.getUser);
+    });
 
-    this.getCalls();
   },
 
   methods: {
-    getCalls() {
-      this.$http
-        .get("http://localhost:8000/api/calls")
-        .then((response) => {
-          this.calls = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    ...mapActions(['setCalls']),
 
     getAssignedTechCalls() {},
 

@@ -2,7 +2,7 @@
     <div class="tabela col-10">
         <div
             class="col-12 text-left bg-white p-2 border border-secondary rounded my-1"
-            v-for="(call, index) in calls"
+            v-for="(call, index) in getCalls"
             :key="index" :id="tr+index"
         >
         <div class="row">
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex';
+ import { mapGetters } from 'vuex';
 
 export default {
     name: 'CallsTable',
@@ -141,8 +141,11 @@ export default {
         };
     },
 
+    computed: {
+        ...mapGetters(['getCalls']),
+    },
+
     methods: {
-        // ...mapActions(['set']),
         getPriority(gut) {
             if (gut > 80) {
                 return "Alta";

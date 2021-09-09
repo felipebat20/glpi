@@ -4,6 +4,7 @@ import router from '../../../router';
 const getDefaultState = () => {
     return {
       user: {
+          id: '',
           name: '',
           type: '',
           username: '',
@@ -16,7 +17,6 @@ const getDefaultState = () => {
 
   const getters = {
     getUser: state => state.user,
-    getShowModal: state => state.modal.show_modal,
   };
 
   const actions = {
@@ -43,9 +43,10 @@ const getDefaultState = () => {
 
   const mutations = {
     newUser: (state, user) => {
-      const { name, user_type, username, avatar_url } = user;
+      const { id, name, user_type, username, avatar_url } = user;
       state.user = {
         ...state.user,
+        id: id ? id : state.user.id,
         name: name ? name : state.user.name,
         type: user_type ? user_type : state.user.user_type,
         username: username ? username : state.user.username,

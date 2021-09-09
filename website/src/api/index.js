@@ -11,8 +11,14 @@ const getGithubAvatar = async (username) => {
     return response;
 };
 
+const fetchCalls = async(id, user_type) => {
+    let response = await axios.get(`http://localhost:8000/api/${user_type}/${id}/calls`);
+    return response;
+}
+
 
 export {
     fetchLogin,
-    getGithubAvatar
+    getGithubAvatar,
+    fetchCalls,
 }

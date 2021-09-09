@@ -7,6 +7,8 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\CallsController;
 use App\Http\Controllers\SessionController;
+use App\Models\Manager;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,11 +50,12 @@ Route::prefix('/technician')->group( function() {
 
 Route::get('/managers', [ManagerController::class,'index']);
 
-Route::prefix('/manager')->group( function() {
+Route::prefix('/admin')->group( function() {
     Route::post('/store', [ManagerController::class, 'store']);
     Route::get('/{id}', [ManagerController::class, 'show']);
     Route::put('/{id}', [ManagerController::class, 'update']);
     Route::delete('/{id}', [ManagerController::class, 'destroy']);
+    Route::get('/{id}/calls', [ManagerController::class, 'calls']);
 }
 );
 
