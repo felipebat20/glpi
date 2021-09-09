@@ -83,13 +83,13 @@ export default {
   },
 
   async mounted() {
-    if (!this.getUser.name) {
-      this.$router.push({ name: "login" });
-    }
+    this.$nextTick(function () {
+      if (!this.getUser.name) {
+        this.$router.push({ name: "login" });
+      }
+    }),
 
     this.getCalls();
-
-    await this.getAvatar();
   },
 
   methods: {

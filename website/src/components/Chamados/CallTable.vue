@@ -6,7 +6,7 @@
             :key="index" :id="tr+index"
         >
         <div class="row">
-            <div class="col-3">
+            <div class="col-2">
                 <div>
                     <small class="text-muted">
                         Código
@@ -19,7 +19,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <div>
                     <small class="text-muted">
                         Data
@@ -32,7 +32,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-6">
                 <div>
                     <small class="text-muted">
                         Descrição
@@ -45,19 +45,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-2">
-                <div>
-                    <small class="text-muted">
-                        Usuário
-                    </small>
-                </div>
 
-                <div>
-                    <p>
-                        {{ call.name }}
-                    </p>
-                </div>
-            </div>
             <div class="col-2 d-flex aling-items-center">
                 <div class="col-12">
                     <button @click="handleEditCall(call)" class="btn btn-block btn-outline-primary w-100">
@@ -68,7 +56,7 @@
         </div>
 
         <div class="row">
-            <div class="col-3">
+            <div class="col-2">
                 <div>
                     <small class="text-muted">
                         GUT
@@ -82,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="col-3">
+            <div class="col-2">
                 <div>
                     <small class="text-muted">
                         Prioridade
@@ -96,7 +84,7 @@
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-2">
                 <div>
                     <small class="text-muted">
                         Status
@@ -109,6 +97,21 @@
                     </p>
                 </div>
             </div>
+
+            <div class="col-4">
+                <div>
+                    <small class="text-muted">
+                        Usuário
+                    </small>
+                </div>
+
+                <div>
+                    <p>
+                        {{ call.name }}
+                    </p>
+                </div>
+            </div>
+
             <div class="col-2">
                 <button type="button" class="btn btn-outline-danger w-100" @click="deleteCall()">
                     <i class="fas fa-minus-circle" /> Excluir

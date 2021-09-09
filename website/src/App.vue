@@ -15,12 +15,22 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
   import NavigationBar from './components/NavigationBar.vue';
   import Footer from './components/Common/Footer';
 
 export default {
   name: 'App',
   components: { NavigationBar, Footer },
+  mounted() {
+    if (localStorage.getItem("user")) {
+      this.setUserFromLocalStorage(JSON.parse(localStorage.getItem("user")))
+    }
+  },
+
+  methods: {
+    ...mapActions(['setUserFromLocalStorage']),
+  }
 }
 </script>
 

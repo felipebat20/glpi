@@ -40,7 +40,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { fetchLogin } from '../api';
 
 export default {
   name: "Login",
@@ -55,20 +54,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setUserState']),
+    ...mapActions([
+      'setUserState',
+    ]),
     async handleSubmit() {
-      console.log(fetchLogin);
-      const { data } = await fetchLogin(this.user);
-      console.log(data);
-      if (data) {
-        this.setUserState(data)
+      this.setUserState(this.user);
         return this.$router.push({name: 'principal'});
-      }
     },
 
-    saveUserInLocalStorage(user){
-      localStorage.setItem('user', JSON.stringify(user));
-    }
   }
 };
 </script>

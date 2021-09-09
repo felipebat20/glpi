@@ -37,11 +37,11 @@
                 </router-link>
             </div>
 
-            <div v-if="getUser.name" class="row align-content-center">
+            <div v-if="getUser.avatar_url" class="row align-content-center">
                 <div  class="dropdown text-end">
                     <span class="dropdown-toggle" type="button" @click="is_selecting = true">
                          <img
-                            :src="avatar_url"
+                            :src="getUser.avatar_url"
                             class="avatar d-inline-block"
                             alt=""
                         >
@@ -82,33 +82,9 @@ export default {
         }
     },
 
-    mounted() {
-        if (this.getUser.name) {
-            this.getAvatar();
-        }
-    },
-
-    watch: {
-        getUser() {
-            if (this.getUser.name) {
-                this.getAvatar();
-            }
-        },
-    },
-
     methods: {
         ...mapActions(['resetUserState']),
-        async getAvatar() {
-            await this.$http.get(`https://api.github.com/users/${this.getUser.username}`)
-            .then( response => {
-                if (response.status == 200 ){
-                    this.avatar_url = response.data.avatar_url;
-                }
-            })
-            .catch( error => {
-                console.log(error);
-            });
-        },
+
 
         logout() {
             this.resetUserState();
