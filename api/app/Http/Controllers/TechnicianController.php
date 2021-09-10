@@ -15,26 +15,15 @@ class TechnicianController extends Controller
      */
     public function index()
     {
-        $techs = User::where('usertype', 2)->get();
+        $techs = User::where('user_type', 2)->get();
         return $techs;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $newTech = new Tech;

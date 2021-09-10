@@ -157,7 +157,7 @@ export default {
 
         // this.selectedTech = this.call.technician_id;
 
-        // this.getTechs();
+        this.getTechs();
     },
 
     methods: {
