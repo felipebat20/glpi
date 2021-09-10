@@ -9,13 +9,13 @@
                             <label for="usuario" class="pt-2">
                                 Título:
                             </label>
-                            <input type="text" v-model="call.title" disabled class="form-control d-inline-block" placeholder="Digite o título do chamado aqui">
+                            <input type="text" v-model="getCall.title" disabled class="form-control d-inline-block" placeholder="Digite o título do chamado aqui">
                         </div>
                         <div class="form-group text-left row my-3">
                             <label for="descrição" class="pt-2">
                                 Descrição:
                             </label>
-                            <textarea class="form-control" v-model="call.description"></textarea>
+                            <textarea class="form-control" v-model="getCall.description"></textarea>
                         </div>
                         <div class="form-group text-left row my-3">
                             <label for="descrição" class="pt-2">
@@ -29,7 +29,7 @@
                                     Ações:
                                 </label>
                             </div>
-                           
+
                             <div class="col-10">
                             <table class="table">
                                 <thead>
@@ -48,28 +48,28 @@
 
                         </div>
                     <div class="col-3">
-                        
+
                     </div>
-                    
+
                     </div>
                     <div class="col-3">
                         <div class="col-12">
                             <label for="nivel">Gravidade</label>
-                            <select name="nivel" v-model="call.severity" class="form-select">
+                            <select name="nivel" v-model="getCall.severity" class="form-select">
                                 <option value="0" selected>Selecione</option>
                                 <option v-for="(item, index) in severity" :key="index" :value="item.value">{{ item.text }}</option>
                             </select>
                         </div>
                         <div class="col-12 my-3">
                             <label for="nivel">Urgência</label>
-                            <select name="nivel" v-model="call.urgency" class="form-select">
+                            <select name="nivel" v-model="getCall.urgency" class="form-select">
                                 <option value="0" selected>Selecione</option>
                                 <option v-for="(item, index) in urgency" :key="index" :value="item.value">{{ item.text }}</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <label for="nivel">Tendência</label>
-                            <select name="nivel" v-model="call.trend" class="form-select">
+                            <select name="nivel" v-model="getCall.trend" class="form-select">
                                 <option value="0" selected>Selecione</option>
                                 <option v-for="(item, index) in trend" :key="index" :value="item.value">{{ item.text }}</option>
                             </select>
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: 'EditarChamado',
 
@@ -103,7 +104,6 @@ export default {
     data() {
         return {
             user: () => {},
-            call: this.$router.params.call,
             severity: [
                 {value: 1, text: 'Sem gravidade'},
                 {value: 2, text: 'Pouco grave'},
@@ -134,12 +134,16 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters(['getCall', 'getUser']),
+    },
+
     mounted() {
         // if (localStorage.getItem("user")) {
         //     this.user = JSON.parse(localStorage.getItem("user"));
         // }
 
-        if (!this.user) {
+        if (!this.getUser) {
             this.$router.push({ name: "login" });
         }
 
@@ -147,13 +151,13 @@ export default {
         //     this.call = JSON.parse(localStorage.getItem("call"));
         // }
 
-        if (!this.call) {
+        if (!this.getCall) {
             this.$router.go(-1);
         }
 
-        this.selectedTech = this.call.technician_id;
+        // this.selectedTech = this.call.technician_id;
 
-        this.getTechs();
+        // this.getTechs();
     },
 
     methods: {
@@ -168,26 +172,26 @@ export default {
         },
 
         handleSubmit(){
-            let gut = 0;
-            if((this.call.severity * this.call.urgency * this.call.trend) != 0) {
-                gut = this.call.severity * this.call.urgency * this.call.trend;
-            }
+            // let gut = 0;
+            // if((this.call.severity * this.call.urgency * this.call.trend) != 0) {
+            //     gut = this.call.severity * this.call.urgency * this.call.trend;
+            // }
 
-            this.call.technician_id = this.selectedTech;
-            this.call.gut = gut;
+            // this.call.technician_id = this.selectedTech;
+            // this.call.gut = gut;
 
-            if (this.call.status < 2) {
-                this.call.status = 2;
-            }
-            
-            this.$http.put(`http://localhost:8000/api/call/${this.call.id}`, this.call)
-                .then(response => {
-                    console.log(response.data, this.call);
-                    this.$router.go(-1);
-                })
-                .catch( err => {
-                    console.log(err);
-                });
+            // if (this.call.status < 2) {
+            //     this.call.status = 2;
+            // }
+
+            // this.$http.put(`http://localhost:8000/api/call/${this.call.id}`, this.call)
+            //     .then(response => {
+            //         console.log(response.data, this.call);
+            //         this.$router.go(-1);
+            //     })
+            //     .catch( err => {
+            //         console.log(err);
+            //     });
         }
     }
 }

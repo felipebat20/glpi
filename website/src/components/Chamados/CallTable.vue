@@ -123,7 +123,7 @@
 </template>
 
 <script>
- import { mapGetters } from 'vuex';
+ import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'CallsTable',
@@ -146,6 +146,7 @@ export default {
     },
 
     methods: {
+        ...mapActions(['setCall']),
         getPriority(gut) {
             if (gut > 80) {
                 return "Alta";
@@ -164,7 +165,9 @@ export default {
         handleEditCall(call) {
             // this.saveCallInLocalStorage(call);
 
-            return this.$router.push({name: 'EditarChamado', params: { call }});
+            this.setCall(call);
+
+            return this.$router.push({name: 'EditarChamado'});
         },
 
         deleteCall(){

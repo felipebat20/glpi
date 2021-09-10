@@ -13,8 +13,7 @@ const getDefaultState = () => {
   };
 
   const actions = {
-    // setUserProperties: ({ commit }, calls) => commit('newUserProperties', calls),
-    // resetUserState: ({ commit }) => commit('reset_user_state'),
+    resetCallsState: ({ commit }) => commit('reset_calls_state'),
     setCalls: async ({ commit }, { id, type }) => {
       const { data } = await fetchCalls(id, type);
       commit('newCalls', data)
@@ -23,7 +22,7 @@ const getDefaultState = () => {
 
   const mutations = {
     newCalls: (state, calls) => state.calls = calls,
-    // reset_user_state: (state) => Object.assign(state, getDefaultState()),
+    reset_calls_state: (state) => Object.assign(state, getDefaultState()),
   };
 
   export default {
