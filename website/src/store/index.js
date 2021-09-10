@@ -14,3 +14,4 @@ export default new Vuex.Store({
     call,
   }
 });
+//Testando commits configurados
