@@ -13,7 +13,7 @@ const getDefaultState = () => {
   };
 
   const actions = {
-    resetCallsState: ({ commit }) => commit('reset_calls_state'),
+    resetStates: ({ commit }) => commit('reset_calls_state'),
     setCalls: async ({ commit }, { id, type }) => {
       const { data } = await fetchCalls(id, type);
       commit('newCalls', data)

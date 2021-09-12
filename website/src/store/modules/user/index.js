@@ -22,7 +22,7 @@ const getDefaultState = () => {
   const actions = {
     setUserProperties: ({ commit }, props) => commit('newUserProperties', props),
     setUserFromLocalStorage: ({ commit }, user) => commit('newUser', user),
-    resetUserState: ({ commit }) =>{
+    resetStates: ({ commit }) =>{
       localStorage.removeItem('user');
       commit('reset_user_state');
     },
