@@ -27,7 +27,7 @@ const getDefaultState = () => {
   };
 
   const actions = {
-    resetCallState: ({ commit }) => commit('reset_call_state'),
+    resetStates: ({ commit }) => commit('reset_call_state'),
     setCall: async ({ commit }, call) => commit('newCall', call)
   };
 

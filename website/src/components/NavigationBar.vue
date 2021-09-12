@@ -83,11 +83,11 @@ export default {
     },
 
     methods: {
-        ...mapActions(['resetUserState']),
+        ...mapActions(['resetStates']),
 
 
         logout() {
-            this.resetUserState();
+            this.resetStates();
             this.$router.push('/', {name: 'login'})
         }
     }
@@ -103,7 +103,6 @@ export default {
         align-content: center;
         max-width: 1200px;
         margin: auto;
-        /* background-color: #037682; */
     }
 
     .nav div a {
