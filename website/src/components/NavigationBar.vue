@@ -37,8 +37,11 @@
                 </router-link>
             </div>
 
-            <div v-if="getUser.avatar_url" class="row align-content-center">
-                <div  class="dropdown text-end">
+            <div
+                v-if="getUser.avatar_url"
+                class="row align-content-center"
+            >
+                <div class="dropdown text-end">
                     <span class="dropdown-toggle" type="button" @click="is_selecting = true">
                          <img
                             :src="getUser.avatar_url"
@@ -47,7 +50,11 @@
                         >
                     </span>
 
-                    <div class="dropdown-menu" :class="getCurrentDropdown" @click="is_selecting = false">
+                    <div
+                        class="dropdown-menu"
+                        :class="getCurrentDropdown"
+                        @click="is_selecting = false"
+                    >
                         <button class="dropdown-item" type="button">Editar perfil</button>
                         <button class="dropdown-item" type="button" @click="logout()">
                             Sair

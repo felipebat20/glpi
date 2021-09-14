@@ -1,26 +1,6 @@
 <template>
   <div class="container-fluid h-100">
     <div class="panel form-group col-12 mx-auto rounded-3 py-3 my-3 h-100">
-      <div class="row px-4 d-flex justify-content-center">
-        <img
-          class="img-fluid d-inline-block col-3"
-          alt=""
-        />
-        <h1 class="d-inline-block text-center col-6 pt-3">
-          Bem vindo ao GLPI.
-        </h1>
-        <div class="col-3">
-            <div class="text-end">
-                <img
-                  :src="avatar_url"
-                  class="avatar d-inline-block"
-                  alt=""
-                >
-                <span class="d-block">{{ user.name }}<i class="fas fa-user-edit mx-2"></i></span>
-            </div>
-        </div>
-      </div>
-
       <div class="col-12 px-4 ">
         <form action="#" method="POST" class="form-group">
           <div class="form-header col-10 d-flex flex-row justify-content-between">
