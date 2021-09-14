@@ -45,6 +45,7 @@ Route::prefix('/technician')->group( function() {
     Route::get('/{id}', [TechnicianController::class, 'show']);
     Route::put('/{id}', [TechnicianController::class, 'update']);
     Route::delete('/{id}', [TechnicianController::class, 'destroy']);
+    Route::get('/{id}/calls', [TechnicianController::class, 'calls']);
 }
 );
 
