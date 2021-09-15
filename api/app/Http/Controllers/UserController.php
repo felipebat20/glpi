@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User as User;
+use App\Models\Call as Call;
 
 class UserController extends Controller
 {
@@ -65,5 +66,10 @@ class UserController extends Controller
         }
 
         return "User not Found";
+    }
+
+    public function calls($id)
+    {
+       return Call::all()->where('user_id', $id);
     }
 }
