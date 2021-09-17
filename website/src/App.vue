@@ -8,7 +8,7 @@
       <router-view />
     </main>
 
-      <footer>
+      <footer class="d-flex mb-0">
         <Footer />
       </footer>
   </div>
@@ -39,6 +39,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   color: #2c3e50;
   background: #0f0c29;
   overflow-x: hidden;
@@ -53,6 +54,12 @@ export default {
 }
 main {
   max-width: 1200px;
+  min-height: 75vh;
   margin: auto;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
 }
 </style>
