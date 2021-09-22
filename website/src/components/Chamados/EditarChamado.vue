@@ -70,7 +70,7 @@
                                 </option>
 
                                 <option
-                                    :for="(item, index) in severity"
+                                    v-for="(item, index) in severity"
                                     :key="index"
                                     :value="item.value"
                                 >

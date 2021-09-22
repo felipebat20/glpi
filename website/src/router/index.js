@@ -5,6 +5,7 @@ import Login from '../components/Login.vue';
 import Cadastro from '../components/Admin/Cadastro.vue';
 import Principal from '../components/Common/MainPanel.vue';
 import UsersPanel from '../components/Admin/Users.vue';
+import NotFound from '../components/Common/NotFound.vue';
 import Chamado from '../components/Chamados/Chamado.vue';
 import EditCall from '../components/Chamados/EditarChamado.vue';
 import AdminPanel from '../components/Admin/Admin.vue';
@@ -12,23 +13,28 @@ import Technician from '../components/Technician/Technician.vue';
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'login',
-        component: Login
+        component: Login,
     },
 
+    {
+        path: '*',
+        component: NotFound,
+    },
 
     {
         path: '/admin/users/cadastro',
         name: 'cadastro',
-        component: Cadastro
+        component: Cadastro,
     },
 
     {
         path: '/cadastro',
         name: 'cadastro',
-        component: Cadastro
+        component: Cadastro,
     },
 
     {
