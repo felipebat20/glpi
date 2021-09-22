@@ -41,8 +41,19 @@
             </div>
             <div class="col-12 d-flex justify-content-end">
                 <div class="col-9 px-3 d-flex justify-content-between">
-                    <button class="btn btn-primary col-5" @click="handleSubmit()">Cadastrar</button>
-                    <button @click="backRoute" class="btn btn-danger col-5">Voltar</button>
+                    <button
+                        @click="backRoute"
+                        class="btn btn-danger col-5"
+                    >
+                        Voltar
+                    </button>
+
+                    <button
+                        class="btn btn-primary col-5"
+                        @click="handleSubmit()"
+                    >
+                        Cadastrar
+                    </button>
                 </div>
             </div>
         </div>

@@ -1,90 +1,180 @@
 <template>
     <div class="container-fluid  h-100 ">
         <div class="panel form-group col-12 mx-auto  rounded-3 py-3 my-5">
-            <h1 class="text-center">Atualizar chamado</h1>
+            <h1 class="text-center">
+                Atualizar chamado
+            </h1>
             <form action="#" method="POST" class="col-11 mx-auto" @submit.prevent="handleSubmit">
                 <div class="row form-group">
                     <div class="col-9 row">
                         <div class="form-group text-left row my-3">
-                            <label for="usuario" class="pt-2">
+                            <label
+                                for="usuario"
+                                class="pt-2"
+                            >
                                 Título:
                             </label>
-                            <input type="text" v-model="getCall.title" disabled class="form-control d-inline-block" placeholder="Digite o título do chamado aqui">
+
+                            <input
+                                type="text"
+                                v-model="getCall.title"
+                                disabled
+                                class="form-control d-inline-block"
+                                placeholder="Digite o título do chamado aqui"
+                            >
                         </div>
                         <div class="form-group text-left row my-3">
-                            <label for="descrição" class="pt-2">
+                            <label
+                                for="descrição"
+                                class="pt-2"
+                            >
                                 Descrição:
                             </label>
-                            <textarea class="form-control" v-model="getCall.description"></textarea>
+
+                            <textarea
+                                class="form-control"
+                                v-model="getCall.description"
+                            />
                         </div>
                         <div class="form-group text-left row my-3">
-                            <label for="descrição" class="pt-2">
+                            <label
+                                for="descrição"
+                                class="pt-2"
+                            >
                                 Anexos:
                             </label>
-                                <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input" class="custom-file-input">
+
+                            <img
+                                :src="getCall.filepath"
+                                alt=""
+                            >
                         </div>
-                        <div class="form-group my-3 d-flex justify-content-between">
-                            <div class="d-inline-block col-2 text-left">
-                                <label for="descrição" class="pt-2  ">
-                                    Ações:
-                                </label>
-                            </div>
-
-                            <div class="col-10">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Autor</th>
-                                        <th>Título</th>
-                                        <th>Data</th>
-                                    </tr>
-                                </thead>
-                                <tfoot></tfoot>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                            </div>
-
-                        </div>
-                    <div class="col-3">
-
                     </div>
 
-                    </div>
                     <div class="col-3">
                         <div class="col-12">
-                            <label for="nivel">Gravidade</label>
-                            <select name="nivel" v-model="getCall.severity" class="form-select">
-                                <option value="0" selected>Selecione</option>
-                                <option v-for="(item, index) in severity" :key="index" :value="item.value">{{ item.text }}</option>
+                            <label for="nivel">
+                                Gravidade
+                            </label>
+
+                            <select
+                                name="nivel"
+                                v-model="getCall.severity"
+                                class="form-select"
+                            >
+                                <option
+                                    value="0"
+                                    selected
+                                >
+                                    Selecione
+                                </option>
+
+                                <option
+                                    :for="(item, index) in severity"
+                                    :key="index"
+                                    :value="item.value"
+                                >
+                                    {{ item.text }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-12 my-3">
-                            <label for="nivel">Urgência</label>
-                            <select name="nivel" v-model="getCall.urgency" class="form-select">
-                                <option value="0" selected>Selecione</option>
-                                <option v-for="(item, index) in urgency" :key="index" :value="item.value">{{ item.text }}</option>
+                            <label for="nivel">
+                                Urgência
+                            </label>
+
+                            <select
+                                name="nivel"
+                                v-model="getCall.urgency"
+                                class="form-select"
+                            >
+                                <option
+                                    value="0"
+                                    selected
+                                >
+                                    Selecione
+                                </option>
+
+                                <option
+                                    v-for="(item, index) in urgency"
+                                    :key="index"
+                                    :value="item.value"
+                                >
+                                    {{ item.text }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-12">
-                            <label for="nivel">Tendência</label>
-                            <select name="nivel" v-model="getCall.trend" class="form-select">
-                                <option value="0" selected>Selecione</option>
-                                <option v-for="(item, index) in trend" :key="index" :value="item.value">{{ item.text }}</option>
+                            <label for="nivel">
+                                Tendência
+                            </label>
+
+                            <select
+                                name="nivel"
+                                v-model="getCall.trend"
+                                class="form-select"
+                            >
+                                <option
+                                    value="0"
+                                    selected
+                                >
+                                    Selecione
+                                </option>
+
+                                <option
+                                    v-for="(item, index) in trend"
+                                    :key="index"
+                                    :value="item.value"
+                                >
+                                    {{ item.text }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-12">
-                            <label for="nivel" class="col-12 mt-5" id="techlabel">Atribuir ao técnico</label>
-                            <select name="nivel" v-model="selectedTech" class="form-select">
-                                <option value="0" selected>Selecione</option>
-                                <option v-for="(tech, index) in techs" :key="index" :value="tech.id">{{ tech.name }}</option>
+                            <label
+                                for="nivel"
+                                class="col-12 mt-5"
+                                id="techlabel"
+                            >
+                                Atribuir ao técnico
+                            </label>
+
+                            <select
+                                name="nivel"
+                                v-model="selectedTech"
+                                class="form-select"
+                            >
+                                <option
+                                    value="0"
+                                    selected
+                                >
+                                    Selecione
+                                </option>
+
+                                <option
+                                    v-for="(tech, index) in techs"
+                                    :key="index"
+                                    :value="tech.id"
+                                >
+                                    {{ tech.name }}
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="col-9 d-flex flex-row justify-content-between my-4">
-                        <a @click="$router.go(-1)" class="btn btn-warning px-5">Voltar</a>
-                        <button type="submit" class="btn btn-success px-5">Atualizar chamado</button>
+                        <a
+                            @click="$router.go(-1)"
+                            class="btn btn-warning px-5"
+                        >
+                            Voltar
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success px-5"
+                        >
+                            Atualizar chamado
+                        </button>
                     </div>
                 </div>
             </form>
@@ -94,6 +184,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import severity from '../../static/severity';
+import urgency from '../../static/urgency';
+import trend from '../../static/trend';
 export default {
     name: 'EditarChamado',
 
@@ -104,33 +197,11 @@ export default {
     data() {
         return {
             user: () => {},
-            severity: [
-                {value: 1, text: 'Sem gravidade'},
-                {value: 2, text: 'Pouco grave'},
-                {value: 3, text: 'Grave'},
-                {value: 4, text: 'Muito Grave'},
-                {value: 5, text: 'Extremamente Grave'},
-            ],
-
-            urgency: [
-                {value: 1, text: 'Longo prazo'},
-                {value: 2, text: 'Bastante prazo'},
-                {value: 3, text: 'Médio prazo'},
-                {value: 4, text: 'Curto prazo'},
-                {value: 5, text: 'O quanto antes'},
-            ],
-
-            trend: [
-                {value: 1, text: 'Não piora'},
-                {value: 2, text: 'Piora a longo prazo'},
-                {value: 3, text: 'Piora a médio prazo'},
-                {value: 4, text: 'Piora a médio prazo'},
-                {value: 5, text: 'Piora rapidamente'},
-            ],
-
-            selectedTech: 0,
-
+            urgency,
+            trend,
+            severity,
             techs: [],
+            selectedTech: 0,
         }
     },
 
@@ -139,10 +210,6 @@ export default {
     },
 
     mounted() {
-        // if (localStorage.getItem("user")) {
-        //     this.user = JSON.parse(localStorage.getItem("user"));
-        // }
-
         if (!this.getUser) {
             this.$router.push({ name: "login" });
         }

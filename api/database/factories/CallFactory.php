@@ -3,18 +3,21 @@
 namespace Database\Factories;
 
 use App\Models\Call;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 
 class CallFactory extends Factory
 {
     protected $model = Call::class;
-    
+
     public function definition()
     {
+        $users = User::all()->where('user_type', 'user')->pluck('id')->toArray();
+        $techs = User::all()->where('user_type', 'technician')->pluck('id')->toArray();
         return [
-            'user_id' => $this->faker->randomElement([2, 8, 9, 10]),
-            'technician_id' => $this->faker->randomElement([3, 5, 6, 7]),
+            'user_id' => $this->faker->randomElement($users),
+            'technician_id' => $this->faker->randomElement($techs),
             'action_id' => $this->faker->randomDigitNotNull(),
             'title' => $this->faker->sentence(),
             'description' => $this->faker->text(200),
