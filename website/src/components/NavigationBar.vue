@@ -2,7 +2,10 @@
     <div class="row bg-light px-2" id="nav">
         <div class="nav">
             <div class="d-flex align-content-center">
-                <router-link class="nav-link" to="/home">
+                <router-link
+                    class="nav-link"
+                    to="/home"
+                >
                     <img src="@/assets/glpiprincipal.png" class="img-fluid" alt="">
                 </router-link>
             </div>
@@ -14,7 +17,7 @@
             </div>
 
             <div class="row align-content-center">
-                <router-link class="nav-link" to="/Chamado">
+                <router-link class="nav-link" to="/chamado">
                     Chamados
                 </router-link>
             </div>
@@ -43,7 +46,7 @@
             >
                 <div class="dropdown text-end">
                     <span class="dropdown-toggle" type="button" @click="is_selecting = true">
-                         <img
+                        <img
                             :src="getUser.avatar_url"
                             class="avatar d-inline-block"
                             alt=""
@@ -95,7 +98,8 @@ export default {
 
         logout() {
             this.resetStates();
-            this.$router.push('/', {name: 'login'})
+            window.sessionStorage.removeItem('auth');
+            this.$router.replace('/', {name: 'login'});
         }
     }
 }
@@ -122,8 +126,8 @@ export default {
     }
 
     .avatar {
-      width: 20%;
-      border-radius: 50%;
-      margin-right: 0 ;
-  }
+        width: 20%;
+        border-radius: 50%;
+        margin-right: 0 ;
+    }
 </style>
