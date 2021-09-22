@@ -11,18 +11,31 @@ import EditCall from '../components/Chamados/EditarChamado.vue';
 import AdminPanel from '../components/Admin/Admin.vue';
 import Technician from '../components/Technician/Technician.vue';
 
+import AuthenticationMiddleware from './middleware/authentication';
+
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
+        redirect: '/login'
+    },
+
+    {
+        path: '/login',
         name: 'login',
         component: Login,
+        meta: {
+            authenticated: false,
+        }
     },
 
     {
         path: '*',
         component: NotFound,
+        meta: {
+            authenticated: false,
+        }
     },
 
     {
@@ -41,14 +54,18 @@ const routes = [
         path: '/home',
         name: 'principal',
         component: Principal,
-        props: true,
+        meta: {
+            authenticated: true,
+        }
     },
 
     {
         path: '/chamado',
         name: 'chamado',
         component: Chamado,
-        props: true,
+        meta: {
+            authenticated: true,
+        }
     },
 
     {
@@ -80,8 +97,9 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
-    // base: 'http://localhost:8080',
     routes
 })
+
+router.beforeEach(AuthenticationMiddleware);
 
 export default router

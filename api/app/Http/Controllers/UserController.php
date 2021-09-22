@@ -45,12 +45,12 @@ class UserController extends Controller
         $existingUser = User::find($id);
 
         if ($existingUser){
-           $existingUser->name = $request->name;
-           $existingUser->password = $request->password;
-           $existingUser->username = $request->username;
-           $existingUser->save();
+            $existingUser->name = $request->name;
+            $existingUser->password = $request->password;
+            $existingUser->username = $request->username;
+            $existingUser->save();
 
-           return $existingUser;
+            return $existingUser;
         }
 
         return abort(404, 'User not found.');
@@ -70,6 +70,6 @@ class UserController extends Controller
 
     public function calls($id)
     {
-       return Call::all()->where('user_id', $id);
+        return Call::all()->where('user_id', $id);
     }
 }

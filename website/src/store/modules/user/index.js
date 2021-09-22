@@ -34,10 +34,10 @@ const getDefaultState = () => {
         ...data,
         avatar_url
       }
-      localStorage.setItem('user', JSON.stringify(newUser));
+      window.sessionStorage.setItem('auth', window.btoa(JSON.stringify(newUser)));
       commit('newUser', newUser);
 
-      dispatch(router.push('/home'))
+      dispatch(router.replace('/home'))
     },
   };
 

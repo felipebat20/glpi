@@ -59,7 +59,6 @@ export default {
     ]),
     async handleSubmit() {
       this.setUserState(this.user);
-        return this.$router.push({name: 'principal'});
     },
 
   }
