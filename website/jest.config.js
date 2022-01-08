@@ -6,8 +6,12 @@ module.exports = async () => {
       "json",
       "vue"
     ],
+
     "transform": {
       ".*\\.(vue)$": "vue-jest"
-    }
+    },
+
+    "collectCoverage": true,
+    "collectCoverageFrom": ["**/*.{js,vue}", "!**/node_modules/**"],
   };
 };
